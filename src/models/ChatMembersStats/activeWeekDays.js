@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-const activeWeekDays = R.curry(({ chat, range: { from, to }, timeZone }) => [
+const activeWeekDays = R.curry((chat, { from, to }, timeZone) => [
   {
     $match: {
       chat,

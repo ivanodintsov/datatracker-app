@@ -37,16 +37,12 @@ ChatMembersStats.statics.usersActivity = function(chat, range, timeZone) {
   return this.aggregate(usersActivity(chat, range, timeZone)).allowDiskUse(true);
 };
 
-ChatMembersStats.statics.activeHours = function(query) {
-  return this.aggregate(activeHours(query)).allowDiskUse(true);
+ChatMembersStats.statics.activeHours = function(chat, range, timeZone) {
+  return this.aggregate(activeHours(chat, range, timeZone)).allowDiskUse(true);
 };
 
-ChatMembersStats.statics.activeWeekDays = function(query) {
-  return this.aggregate(activeWeekDays(query)).allowDiskUse(true);
+ChatMembersStats.statics.activeWeekDays = function(chat, range, timeZone) {
+  return this.aggregate(activeWeekDays(chat, range, timeZone)).allowDiskUse(true);
 };
-
-// ChatMembersStats.statics.activeWeekDays = function(query) {
-//   return this.aggregate(activeWeekDays(query))
-// }
 
 export default ChatMembersStats;

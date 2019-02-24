@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-const activeHours = R.curry(({ chat, range: { from, to }, timeZone }) => [
+const activeHours = R.curry((chat, { from, to }, timeZone) => [
   {
     $match: {
       chat,

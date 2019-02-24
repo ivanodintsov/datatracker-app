@@ -2,7 +2,7 @@ import { ChatMembersStats } from '../../../models';
 import { getTimeZoneOffset, getDatesFromTo } from '../../../helpers';
 import getChatStatistics from './queryChatStatistics';
 
-const FullStatistics = async ({ chat, dates, range, timeZone }) => {
+const FullStatistics = async ({ chat, dates, timeZone }) => {
   const [
     chatStatistics,
     usersStatistics,
@@ -10,11 +10,11 @@ const FullStatistics = async ({ chat, dates, range, timeZone }) => {
     hourlyStatistics,
     weekDaysStatistics
   ] = await Promise.all([
-    getChatStatistics(null, { chat, range, timeZone }),
+    getChatStatistics(null, { chat, range: dates, timeZone }),
     ChatMembersStats.usersStatistics(chat, dates, timeZone),
     ChatMembersStats.usersActivity(chat, dates, timeZone),
-    ChatMembersStats.activeHours({ chat, timeZone, range: dates }),
-    ChatMembersStats.activeWeekDays({ chat, timeZone, range: dates })
+    ChatMembersStats.activeHours(chat, dates, timeZone),
+    ChatMembersStats.activeWeekDays(chat, dates, timeZone)
   ]);
 
   return {
