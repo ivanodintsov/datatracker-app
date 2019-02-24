@@ -20,7 +20,6 @@ const ChatMembersStats = baseStatistics({
 });
 
 ChatMembersStats.index({ chat: 1, from: 1, date: -1 }, { unique: true });
-ChatMembersStats.index({ chat: 1, date: -1 }, { unique: true });
 
 ChatMembersStats.statics.chatStatistics = function(chat, range, timeZone) {
   return this.aggregate(chatStatistics(chat, range, timeZone)).allowDiskUse(true);
