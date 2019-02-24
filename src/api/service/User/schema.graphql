@@ -1,0 +1,56 @@
+type UserPhoto {
+  file_name: String!
+  width: Int!
+  height: Int!
+  file_size: Int
+}
+
+type User {
+  _id: ID
+  id: Int!
+  is_bot: Boolean
+  first_name: String!
+  last_name: String
+  username: String
+  language_code: String
+  photo: [UserPhoto]
+}
+
+type Query {
+  allUsers: [User]
+  notUpdatedUsers(days: Int!, limit: Int!): [User]
+}
+
+input UserPhotoInput {
+  file_name: String!
+  width: Int!
+  height: Int,
+  file_size: Int
+}
+
+input UserInput {
+  _id: ID
+  id: Int!
+  is_bot: Boolean
+  first_name: String!
+  last_name: String
+  username: String
+  language_code: String
+  photo: [UserPhotoInput]
+}
+
+input UserUpdateInput {
+  first_name: String
+  last_name: String
+  username: String
+  language_code: String
+  photo: [UserPhotoInput]
+}
+
+type Mutation {
+  createUser(input: UserInput): User
+
+  createUsers(input: [UserInput]): [User]
+
+  updateUser(id: Int!, input: UserUpdateInput!): User
+}

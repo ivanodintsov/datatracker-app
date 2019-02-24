@@ -1,0 +1,368 @@
+type MessageEntity {
+  type: String!
+  offset: Int!
+  length: Int!
+  url: String
+  user: User
+}
+
+type Audio {
+  file_id: String!
+  duration: Int!
+  performer: String
+  title: String
+  mime_type: String
+  file_size: Int
+}
+
+type Video {
+  file_id: String
+  width: Int
+  height: Int
+  duration: Int
+  thumb: PhotoSize
+  mime_type: String
+  file_size: Int
+}
+
+type Voice {
+  file_id: String!
+  duration: Int!
+  title: String
+  mime_type: String
+  file_size: Int
+}
+
+type PhotoSize {
+  file_id: String
+  width: Int
+  height: Int
+  file_path: String
+  file_size: Int
+  local_path: String
+}
+
+type Document {
+  file_id: String!
+  thumb: PhotoSize
+  file_name: String
+  mime_type: String
+  file_size: Int
+}
+
+type VideoNote {
+  file_id: String
+  length: Int
+  duration: Int
+  thumb: PhotoSize
+  file_size: Int
+}
+
+type Contact {
+  phone_number: String
+  first_name: String
+  last_name: String
+  user_id: Int
+  vcard: String
+}
+
+type Location {
+  longitude: Float
+  latitude: Float
+}
+
+type Animation {
+  file_id: String
+  width: Int
+  height: Int
+  duration: Int
+  thumb: PhotoSize
+  file_name: String
+  mime_type: String
+  file_size: Int
+}
+
+type Game {
+  title: String
+  description: String
+  photo: [PhotoSize]
+  text: String
+  text_entities: [MessageEntity]
+  animation: Animation
+}
+
+type Venue {
+  location: Location
+  title: String
+  address: String
+  foursquare_id: String
+  foursquare_type: String
+}
+
+type Invoice {
+  title: String!
+  description: String!
+  start_parameter: String!
+  currency: String!
+  total_amount: Int!
+}
+
+type Message {
+  _id: ID
+  message_id: Int!
+  from: Int
+  date: String!
+  chat: Float!
+  forward_from: Int
+  forward_from_chat: Float
+  forward_from_message_id: Int
+  forward_signature: String
+  forward_date: String
+  reply_to_message: Int
+  edit_date: String
+  media_group_id: String
+  author_signature: String
+  text: String
+  entities: [MessageEntity]
+  caption_entities: [MessageEntity]
+  audio: Audio
+  document: Document
+  game: Game
+  photo: [PhotoSize]
+  # sticker: Sticker
+  video: Video
+  voice: Voice
+  video_note: VideoNote
+  caption: String
+  contact: Contact
+  location: Location
+  venue: Venue
+  new_chat_members: [User]
+  left_chat_member: User
+  new_chat_title: String
+  new_chat_photo: [PhotoSize]
+  delete_chat_photo: Boolean
+  group_chat_created: Boolean
+  supergroup_chat_created: Boolean
+  channel_chat_created: Boolean
+  migrate_to_chat_id: Float
+  migrate_from_chat_id: Float
+  pinned_message: Int
+  invoice: Invoice
+  # successful_payment: SuccessfulPayment
+  connected_website: String
+}
+
+type Query {
+  allMessages: [Message]
+
+  findByChatAndId(chat: ID!, message_id: Int!): Message
+}
+
+input MessageEntityInput {
+  type: String!
+  offset: Int!
+  length: Int!
+  url: String
+  user: UserInput
+}
+
+input AudioInput {
+  file_id: String!
+  duration: Int!
+  performer: String
+  title: String
+  mime_type: String
+  file_size: Int
+  thumb: PhotoSizeInput
+}
+
+input VideoInput {
+  file_id: String!
+  width: Int!
+  height: Int!
+  duration: Int!
+  thumb: PhotoSizeInput
+  mime_type: String
+  file_size: Int
+}
+
+input VoiceInput {
+  file_id: String!
+  duration: Int!
+  title: String
+  mime_type: String
+  file_size: Int
+}
+
+input PhotoSizeInput {
+  file_id: String!
+  width: Int
+  height: Int
+  file_path: String
+  file_size: Int
+  local_path: String
+}
+
+input DocumentInput {
+  file_id: String!
+  thumb: PhotoSizeInput
+  file_name: String
+  mime_type: String
+  file_size: Int
+}
+
+input MessageStickerInput {
+  file_id: String!
+  set_name: String
+}
+
+input VideoNoteInput {
+  file_id: String!
+  length: Int!
+  duration: Int!
+  thumb: PhotoSizeInput
+  file_size: Int
+}
+
+input ContactInput {
+  phone_number: String!
+  first_name: String!
+  last_name: String
+  user_id: Int
+  vcard: String
+}
+
+input LocationInput {
+  longitude: Float!
+  latitude: Float!
+}
+
+input AnimationInput {
+  file_id: String!
+  width: Int!
+  height: Int!
+  duration: Int!
+  thumb: PhotoSizeInput
+  file_name: String
+  mime_type: String
+  file_size: Int
+}
+
+input GameInput {
+  title: String!
+  description: String!
+  photo: [PhotoSizeInput]!
+  text: String
+  text_entities: [MessageEntityInput]
+  animation: AnimationInput
+}
+
+input VenueInput {
+  location: LocationInput!
+  title: String!
+  address: String!
+  foursquare_id: String
+  foursquare_type: String
+}
+
+input InvoiceInput {
+  title: String!
+  description: String!
+  start_parameter: String!
+  currency: String!
+  total_amount: Int!
+}
+
+input MessageInput {
+  message_id: Int!
+  from: Int
+  date: String!
+  chat: Float!
+  forward_from: Int
+  forward_from_chat: Float
+  forward_from_message_id: Int
+  forward_signature: String
+  forward_date: String
+  reply_to_message: Int
+  edit_date: String
+  media_group_id: String
+  author_signature: String
+  text: String
+  entities: [MessageEntityInput]
+  caption_entities: [MessageEntityInput]
+  audio: AudioInput
+  document: DocumentInput
+  game: GameInput
+  photo: [PhotoSizeInput]
+  sticker: MessageStickerInput
+  video: VideoInput
+  voice: VoiceInput
+  video_note: VideoNoteInput
+  caption: String
+  contact: ContactInput
+  location: LocationInput
+  venue: VenueInput
+  new_chat_members: [UserInput]
+  left_chat_member: UserInput
+  new_chat_title: String
+  new_chat_photo: [PhotoSizeInput]
+  delete_chat_photo: Boolean
+  group_chat_created: Boolean
+  supergroup_chat_created: Boolean
+  channel_chat_created: Boolean
+  migrate_to_chat_id: Float
+  migrate_from_chat_id: Float
+  pinned_message: Int
+  invoice: InvoiceInput
+  # successful_payment: SuccessfulPayment
+  connected_website: String
+}
+
+input MessageUpdateInput {
+  date: String
+  forward_from: Int
+  forward_from_chat: Float
+  forward_from_message_id: Int
+  forward_signature: String
+  forward_date: String
+  reply_to_message: Int
+  edit_date: String
+  media_group_id: String
+  author_signature: String
+  text: String
+  entities: [MessageEntityInput]
+  caption_entities: [MessageEntityInput]
+  audio: AudioInput
+  document: DocumentInput
+  game: GameInput
+  photo: [PhotoSizeInput]
+  sticker: MessageStickerInput
+  video: VideoInput
+  voice: VoiceInput
+  video_note: VideoNoteInput
+  caption: String
+  contact: ContactInput
+  location: LocationInput
+  venue: VenueInput
+  new_chat_members: [UserInput]
+  left_chat_member: UserInput
+  new_chat_title: String
+  new_chat_photo: [PhotoSizeInput]
+  delete_chat_photo: Boolean
+  group_chat_created: Boolean
+  supergroup_chat_created: Boolean
+  channel_chat_created: Boolean
+  migrate_to_chat_id: Float
+  migrate_from_chat_id: Float
+  pinned_message: Int
+  invoice: InvoiceInput
+  # successful_payment: SuccessfulPayment
+  connected_website: String
+}
+
+type Mutation {
+  createMessage(input: MessageInput!): Message
+  updateMessage(chat: Float!, message_id: Int!, input: MessageUpdateInput!, edit_date: String): String
+  processMessage(input: MessageInput!, user: UserInput!, chat: ChatInput!): Message
+}

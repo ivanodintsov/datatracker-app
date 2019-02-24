@@ -1,0 +1,32 @@
+type ChatMemberStatistics {
+  text: Int
+  voice: Int
+  video_note: Int
+  video: Int
+  sticker: Int
+  pinned: Int
+  audio: Int
+  document: Int
+  photo: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  total: Int
+  contact: Int
+  location: Int
+  game: Int
+  venue: Int
+  invoice: Int
+  channel_chat_created: Int
+  supergroup_chat_created: Int
+  group_chat_created: Int
+  migrate_to_chat: Int
+  left_chat_member: Int
+  new_chat_members: Int
+  new_chat_photo: Int
+}
+
+
+type Query {
+  chatMemberStatistics(chat: Float!, user: Int!): ChatMemberStatistics
+}

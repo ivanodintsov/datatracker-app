@@ -1,0 +1,90 @@
+type ChatPhoto {
+  small_file: String
+  big_file: String
+}
+
+type Chat {
+  id: Float!
+  type: String!
+  title: String
+  username: String
+  first_name: String
+  last_name: String
+  all_members_are_administrators: Boolean
+  photo: ChatPhoto
+  description: String
+  # pinned_message: Message
+  sticker_set_name: String
+  can_set_sticker_set: Boolean
+  members_count: Int
+  members_countK: String
+  statistics: Statistics
+  statisticsK: StatisticsK
+}
+
+type Statistics {
+  from: User
+  text: Int
+  voice: Int
+  video_note: Int
+  video: Int
+  sticker: Int
+  pinned: Int
+  audio: Int
+  document: Int
+  photo: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  total: Int
+  contact: Int
+  location: Int
+  game: Int
+  venue: Int
+  invoice: Int
+  channel_chat_created: Int
+  supergroup_chat_created: Int
+  group_chat_created: Int
+  migrate_to_chat: Int
+  left_chat_member: Int
+  new_chat_members: Int
+  new_chat_photo: Int
+  activeDays: Int
+  status: String
+}
+
+type StatisticsK {
+  text: String
+  voice: String
+  video_note: String
+  video: String
+  sticker: String
+  pinned: String
+  audio: String
+  document: String
+  photo: String
+  reply: String
+  forward: String
+  edit: String
+  total: String
+  contact: String
+  location: String
+  game: String
+  venue: String
+  invoice: String
+  channel_chat_created: String
+  supergroup_chat_created: String
+  group_chat_created: String
+  migrate_to_chat: String
+  left_chat_member: String
+  new_chat_members: String
+  new_chat_photo: String
+}
+
+scalar Date
+
+type Query {
+  findChatById(id: Float!): Chat
+  
+  userStatistics(chat: Float!, range: [Date]!, timeZone: String): [Statistics]
+}

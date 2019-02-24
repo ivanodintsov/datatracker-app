@@ -1,0 +1,69 @@
+input StatisticsBaseInput {
+  text: Int
+  voice: Int
+  video_note: Int
+  sticker: Int
+  video: Int
+  audio: Int
+  document: Int
+  photo: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  pinned: Int
+  contact: Int
+  location: Int
+  game: Int
+  venue: Int
+  invoice: Int
+  total: Int
+  channel_chat_created: Int
+  supergroup_chat_created: Int
+  group_chat_created: Int
+  migrate_to_chat: Int
+  left_chat_member: Int
+  new_chat_members: Int
+  new_chat_photo: Int
+  new_chat_title: Int
+}
+
+input StickerChatStatisticsInput {
+  name: String!
+}
+
+input ChatStatisticsInput {
+  from: Int!
+  chat: Float!
+  date: String!
+  text: Int
+  voice: Int
+  video_note: Int
+  sticker: Int
+  sticker_data: StickerChatStatisticsInput
+  video: Int
+  audio: Int
+  document: Int
+  photo: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  pinned: Int
+  contact: Int
+  location: Int
+  game: Int
+  venue: Int
+  invoice: Int
+  total: Int
+  channel_chat_created: Int
+  supergroup_chat_created: Int
+  group_chat_created: Int
+  migrate_to_chat: Int
+  left_chat_member: Int
+  new_chat_members: Int
+  new_chat_photo: Int
+  new_chat_title: Int
+}
+
+type Mutation {
+  dailyChatStatistics(input: ChatStatisticsInput!): Boolean
+}

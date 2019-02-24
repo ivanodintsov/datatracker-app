@@ -1,0 +1,101 @@
+type ChatMember {
+  _id: ID
+  chat: Float!
+  user: Int!
+  status: String
+  until_date: Int
+  can_be_edited: Boolean
+  can_change_info: Boolean
+  can_post_messages: Boolean
+  can_edit_messages: Boolean
+  can_delete_messages: Boolean
+  can_invite_users: Boolean
+  can_restrict_members: Boolean
+  can_pin_messages: Boolean
+  can_promote_members: Boolean
+  can_send_messages: Boolean
+  can_send_media_messages: Boolean
+  can_send_other_messages: Boolean
+  can_add_web_page_previews: Boolean
+  active: Boolean
+}
+
+input ChatMemberInput {
+  chat: Float!
+  user: Int!
+  status: String
+  until_date: Int
+  can_be_edited: Boolean
+  can_change_info: Boolean
+  can_post_messages: Boolean
+  can_edit_messages: Boolean
+  can_delete_messages: Boolean
+  can_invite_users: Boolean
+  can_restrict_members: Boolean
+  can_pin_messages: Boolean
+  can_promote_members: Boolean
+  can_send_messages: Boolean
+  can_send_media_messages: Boolean
+  can_send_other_messages: Boolean
+  can_add_web_page_previews: Boolean
+  active: Boolean
+}
+
+input ChatMemberUpdateInput {
+  chat: Float
+  status: String
+  until_date: Int
+  can_be_edited: Boolean
+  can_change_info: Boolean
+  can_post_messages: Boolean
+  can_edit_messages: Boolean
+  can_delete_messages: Boolean
+  can_invite_users: Boolean
+  can_restrict_members: Boolean
+  can_pin_messages: Boolean
+  can_promote_members: Boolean
+  can_send_messages: Boolean
+  can_send_media_messages: Boolean
+  can_send_other_messages: Boolean
+  can_add_web_page_previews: Boolean
+  active: Boolean
+}
+
+type ChatMemberStatistics {
+  text: Int
+  voice: Int
+  video_note: Int
+  video: Int
+  sticker: Int
+  pinned: Int
+  audio: Int
+  document: Int
+  photo: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  total: Int
+  contact: Int
+  location: Int
+  game: Int
+  venue: Int
+  invoice: Int
+  channel_chat_created: Int
+  supergroup_chat_created: Int
+  group_chat_created: Int
+  migrate_to_chat: Int
+  left_chat_member: Int
+  new_chat_members: Int
+  new_chat_photo: Int
+}
+
+type Query {
+  allMembers: [ChatMember]
+  notUpdatedChatMembers(days: Int!, limit: Int!): [ChatMember]
+  chatMemberStatistics(chat: Float!, user: Int!): ChatMemberStatistics
+}
+
+type Mutation {
+  newChatMember(input: ChatMemberInput!): ChatMember
+  updateChatMember(chat: Float!, user: Int!, input: ChatMemberUpdateInput!): ChatMember
+}

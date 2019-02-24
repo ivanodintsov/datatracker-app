@@ -1,0 +1,121 @@
+type ChatPhoto {
+  small_file: String!
+  big_file: String!
+}
+
+type Chat {
+  _id: ID
+  id: Float!
+  type: String!
+  title: String
+  username: String
+  first_name: String
+  last_name: String
+  all_members_are_administrators: Boolean
+  photo: ChatPhoto
+  description: String
+  invite_link: String
+  pinned_message: Message
+  sticker_set_name: String
+  can_set_sticker_set: Boolean
+  members_count: Int
+  statistics: ChatStatistics
+}
+
+type ChatStatistics {
+  text: Int
+  voice: Int
+  video_note: Int
+  video: Int
+  sticker: Int
+  pinned: Int
+  audio: Int
+  document: Int
+  photo: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  total: Int
+  contact: Int
+  location: Int
+  game: Int
+  venue: Int
+  invoice: Int
+  channel_chat_created: Int
+  supergroup_chat_created: Int
+  group_chat_created: Int
+  migrate_to_chat: Int
+  left_chat_member: Int
+  new_chat_members: Int
+  new_chat_photo: Int
+}
+
+type Statistics {
+  from: User
+  text: Int
+  reply: Int
+  forward: Int
+  edit: Int
+  total: Int
+}
+
+input ChatPhotoInput {
+  small_file_id: String!
+  big_file_id: String!
+  small_file: String
+  big_file: String
+}
+
+input ChatInput {
+  id: Float!
+  type: String!
+  title: String
+  username: String
+  first_name: String
+  last_name: String
+  all_members_are_administrators: Boolean
+  photo: ChatPhotoInput
+  description: String
+  invite_link: String
+  pinned_message: MessageInput
+  sticker_set_name: String
+  can_set_sticker_set: Boolean
+  members_count: Int
+}
+
+input ChatUpdateInput {
+  id: Float
+  type: String
+  title: String
+  username: String
+  first_name: String
+  last_name: String
+  all_members_are_administrators: Boolean
+  photo: ChatPhotoInput
+  description: String
+  invite_link: String
+  pinned_message: MessageInput
+  sticker_set_name: String
+  can_set_sticker_set: Boolean
+  members_count: Int
+  statistics: StatisticsBaseInput
+}
+
+type UserAction {
+  members_count: Int!
+}
+
+type Query {
+  allChats: [Chat]
+  findChatById(id: Float!): Chat
+  chatStatistics(id: Float!): ChatStatistics
+  notUpdatedChats(days: Int!, limit: Int!): [Chat]
+}
+
+type Mutation {
+  createChat(input: ChatInput): Chat
+  migrateChat(id: Float!, input: ChatUpdateInput!): Chat
+  updateChat(id: Float!, input: ChatUpdateInput!): Chat
+  newUsers(id: Float!, members_count: Int!): UserAction
+  leftUser(id: Float!): UserAction
+}

@@ -1,0 +1,61 @@
+type Sticker {
+  file_id: String!
+  width: Int!
+  height: Int!
+  file: String
+}
+
+type StickerSet {
+  name: String!
+  title: String
+  contains_masks: Boolean
+  stickers: [Sticker]
+}
+
+input MaskPositionInput {
+  point: String!
+  x_shift: Float!
+  y_shift: Float!
+  scale: Float!
+}
+
+input StickerInput {
+  file_id: String!
+  width: Int!
+  height: Int!
+  thumb: PhotoSizeInput
+  emoji: String
+  set_name: String
+  mask_position: MaskPositionInput
+  file_size: Int
+  file: String
+}
+
+type createStickerResponse {
+  type: String!
+}
+
+input StickerSetUpdateInput {
+  title: String
+  contains_masks: Boolean
+}
+
+input StickerUpdateInput {
+  width: Int
+  height: Int
+  file: String
+}
+
+type Query {
+  allStickerSets: [StickerSet]
+
+  findSticker(name: String!, file_id: String!): Sticker
+}
+
+type Mutation {
+  createSticker(name: String!, sticker: StickerInput!): createStickerResponse
+
+  updateStickerSet(name: String!, set: StickerSetUpdateInput!): Boolean
+
+  updateSticker(name: String!, file_id: String!, set: StickerUpdateInput!): Boolean
+}

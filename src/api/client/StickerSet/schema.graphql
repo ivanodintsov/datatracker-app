@@ -1,0 +1,30 @@
+type Sticker {
+  file: String
+  emoji: String
+}
+
+type StickerSet {
+  name: String
+  title: String
+  stickers: [Sticker]
+  count: Int
+}
+
+type StickersSetsPaginationResponse {
+  data: [StickerSet]
+  page: Int
+  last: Boolean
+}
+
+type SearchStickerSetsResponse {
+  data: [StickerSet]
+  page: Int
+}
+
+type Query {
+  stickersSetsPagination(page: Int): StickersSetsPaginationResponse
+
+  stickerSetByName(name: String): StickerSet
+
+  searchStickerSets(search: String!): SearchStickerSetsResponse
+}

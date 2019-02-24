@@ -1,0 +1,83 @@
+type MessageEntity {
+  type: String!
+  offset: Int!
+  length: Int!
+  url: String
+  user: ID
+}
+
+type Audio {
+  file_id: String!
+  duration: Int!
+  performer: String
+  title: String
+  mime_type: String
+  file_size: Int
+}
+
+type Voice {
+  file_id: String!
+  duration: Int!
+  title: String
+  mime_type: String
+  file_size: Int
+}
+
+type PhotoSize {
+  file_id: String!
+  width: Int
+  height: Int
+  file_path: String
+  file_size: Int
+  local_path: String
+}
+
+type Document {
+  file_id: String!
+  thumb: PhotoSize
+  file_name: String
+  mime_type: String
+  file_size: Int
+}
+
+type Message {
+  _id: ID
+  message_id: Int!
+  from: Int
+  date: Float!
+  chat: Float!
+  forward_from: Int
+  forward_from_chat: Float
+  forward_from_message_id: Int
+  forward_signature: String
+  forward_date: Int
+  reply_to_message: Int
+  edit_date: Int
+  media_group_id: String
+  author_signature: String
+  text: String
+  # game: Game
+  # photo: [PhotoSize]
+  # sticker: Sticker
+  # video: Video
+  voice: Voice
+  # video_note: VideoNote
+  caption: String
+  # contact: Contact
+  # location: Location
+  # venue: Venue
+  new_chat_members: [User]
+  left_chat_member: User
+  new_chat_title: String
+  # new_chat_photo: [PhotoSize]
+  delete_chat_photo: Boolean
+  group_chat_created: Boolean
+  supergroup_chat_created: Boolean
+  channel_chat_created: Boolean
+  migrate_to_chat_id: Int
+  migrate_from_chat_id: Int
+  pinned_message: Int
+  # invoice: Invoice
+  # successful_payment: SuccessfulPayment
+  connected_website: String
+}

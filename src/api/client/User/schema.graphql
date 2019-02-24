@@ -1,0 +1,21 @@
+type UserPhoto {
+  file_name: String!
+  width: Int!
+  height: Int!
+  file_size: Int
+}
+
+type User {
+  _id: ID
+  id: Int!
+  is_bot: Boolean
+  first_name: String!
+  last_name: String
+  username: String
+  language_code: String
+  photo: [UserPhoto]
+}
+
+type Query {
+  allUsers: [User]
+}
