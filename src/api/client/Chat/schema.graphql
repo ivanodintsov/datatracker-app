@@ -81,8 +81,6 @@ type StatisticsK {
   new_chat_photo: String
 }
 
-scalar Date
-
 type Query {
   findChatById(id: Float!): Chat
   
