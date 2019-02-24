@@ -9,8 +9,8 @@ export const processMessage = async (_, { input, user }) => {
   const statistics = statisticsFromMessage(input);
   await Promise.all([
     createUser(_, { input: user }),
-    newChatMember(_, { input: { chat: input.chat, user: user.id } }),
-    mutationDailyChatStatistics(_, { input: statistics })
+    newChatMember(_, { input: { chat: input.chat, user: user.id } })
   ]);
+  await mutationDailyChatStatistics(_, { input: statistics });
   return message;
 };
