@@ -1,6 +1,7 @@
 import R from 'ramda';
 import moments from 'moment-timezone';
 import { ChatMembersStats } from '../../../models';
+import { ResourceError } from '../errors';
 
 const timeZone = 'UTC';
 const queryChatMemberHourlyStatistics = async (_, { chat, user }) => {
@@ -9,7 +10,7 @@ const queryChatMemberHourlyStatistics = async (_, { chat, user }) => {
   const stats = await ChatMembersStats.memberActiveHours(chat, user, dates, timeZone);
 
   if (R.isEmpty(stats)) {
-    throw new Error('Resource not found.');
+    throw new ResourceError();
   }
 
   return {
