@@ -6,6 +6,7 @@ import usersActivity from './usersActivity';
 import activeHours from './activeHours';
 import activeWeekDays from './activeWeekDays';
 import { baseStatistics } from '../Statistics/base';
+import memberActiveHours from './memberActiveHours';
 
 const Types = mongoose.Schema.Types;
 
@@ -43,6 +44,10 @@ ChatMembersStats.statics.activeHours = function(chat, range, timeZone) {
 
 ChatMembersStats.statics.activeWeekDays = function(chat, range, timeZone) {
   return this.aggregate(activeWeekDays(chat, range, timeZone)).allowDiskUse(true);
+};
+
+ChatMembersStats.statics.memberActiveHours = function(chat, from, range, timeZone) {
+  return this.aggregate(memberActiveHours(chat, from, range, timeZone)).allowDiskUse(true);
 };
 
 export default ChatMembersStats;
