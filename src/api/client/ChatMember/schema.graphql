@@ -24,9 +24,15 @@ type ChatMemberStatistics {
   left_chat_member: Int
   new_chat_members: Int
   new_chat_photo: Int
+  hour: Int
 }
 
+type ChatMemberHourlyStatistics {
+  range: Range
+  data: [ChatMemberStatistics]
+}
 
 type Query {
   chatMemberStatistics(chat: Float!, user: Int!): ChatMemberStatistics
+  chatMemberHourlyStatistics(chat: Float!, user: Int!): ChatMemberHourlyStatistics
 }
