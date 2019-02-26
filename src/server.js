@@ -2,6 +2,7 @@ import express from 'express';
 import R from 'ramda';
 import { ApolloServer } from 'apollo-server-express';
 import { serviceSchema, clientSchema } from './api';
+import { allowedCorsUrls } from './config';
 
 const app = express();
 
@@ -32,6 +33,13 @@ const frontendServer = new ApolloServer({
     };
   }
 });
-frontendServer.applyMiddleware({ app, path: '/client' });
+frontendServer.applyMiddleware({
+  app,
+  path: '/client',
+  cors: {
+    origin: originCors(allowedCorsUrls),
+    optionsSuccessStatus: 200
+  },
+});
 
 export default app;
