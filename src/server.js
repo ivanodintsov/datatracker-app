@@ -22,13 +22,11 @@ const backendServer = new ApolloServer({
   schema: serviceSchema,
   cacheControl: true,
   introspection: true,
-  playground: true
 });
 backendServer.applyMiddleware({ app, path: '/service' });
 
 const frontendServer = new ApolloServer({
   schema: clientSchema,
-  playground: true,
   introspection: true,
   formatError(err) {
     return {
