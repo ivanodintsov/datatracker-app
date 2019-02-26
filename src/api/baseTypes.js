@@ -1,6 +1,16 @@
 import R from 'ramda';
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
+import reduceNumber from '../helpers/reduceNumber';
+
+export const NFormatNumber = new GraphQLScalarType({
+  name: 'NFormatNumber',
+  description: 'Format number(1100 => 1.1K, 1200000 => 1.2M, etc)',
+  
+  serialize(value) {
+    return reduceNumber(value);
+  }
+});
 
 export const baseTypes = {
   Date: new GraphQLScalarType({
