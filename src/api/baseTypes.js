@@ -27,5 +27,22 @@ export const baseTypes = {
       }
       return null;
     }
+  }),
+
+  Long: new GraphQLScalarType({
+    name: 'Long',
+    description: 'Long scalar type',
+
+    parseValue(ast) {
+      return parseInt(ast.value, 10);
+    },
+
+    serialize(value) {
+      return value.toNumber();
+    },
+
+    parseLiteral(ast) {
+      return parseInt(ast.value, 10);
+    }
   })
 };
