@@ -1,19 +1,17 @@
 import express from 'express';
+import R from 'ramda';
 import { ApolloServer } from 'apollo-server-express';
 import { serviceSchema, clientSchema } from './api';
 
 const app = express();
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  
-  if (req.method === 'OPTIONS') {
-    res.send(200);
+const originCors = obj => (origin, callback) => {
+  if (R.propOr(false, origin, obj)) {
+    callback(null, true);
   } else {
-    next();
+    callback(new Error('Not allowed by CORS'));
   }
-});
+};
 
 const backendServer = new ApolloServer({
   schema: serviceSchema,
