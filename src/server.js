@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import { ApolloServer } from 'apollo-server-express';
 import { serviceSchema, clientSchema } from './api';
 
@@ -15,8 +14,6 @@ app.use((req, res, next) => {
     next();
   }
 });
-
-app.use(bodyParser.json());
 
 const backendServer = new ApolloServer({
   schema: serviceSchema,
