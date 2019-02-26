@@ -17,3 +17,5 @@ export const memcachedConfig = {
 export const apolloEngineConfig = {
   apiKey: env.APOLLO_ENGINE
 };
+
+export const allowedCorsUrls = {};
