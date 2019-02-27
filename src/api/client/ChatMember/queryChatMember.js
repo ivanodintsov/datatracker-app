@@ -2,7 +2,7 @@ import R from 'ramda';
 import { ChatMember, User, Chat } from '../../../models';
 import { ResourceError } from '../errors';
 
-const queryChatMember = async (_, { chat: chatId, user: userId }) => {
+const chatMember = async (_, { chat: chatId, user: userId }) => {
   const member = await ChatMember.findOne({ chat: chatId, user: userId });
 
   if (R.isNil(member)) {
@@ -29,4 +29,4 @@ const queryChatMember = async (_, { chat: chatId, user: userId }) => {
   };
 };
 
-export default queryChatMember;
+export default chatMember;

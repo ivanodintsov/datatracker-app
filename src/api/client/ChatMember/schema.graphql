@@ -61,7 +61,7 @@ type ChatMember {
 }
 
 type Query {
-  queryChatMember(chat: Float!, user: Int!): ChatMember
+  chatMember(chat: Float!, user: Int!): ChatMember
   chatMemberStatistics(chat: Float!, user: Int!): ChatMemberStatistics
   chatMemberHourlyStatistics(chat: Float!, user: Int!): ChatMemberHourlyStatistics
 }

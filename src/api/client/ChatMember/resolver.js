@@ -1,10 +1,10 @@
 import chatMemberStatistics from './chatMemberStatistics';
 import chatMemberHourlyStatistics from './queryChatMemberHourlyStatistics';
-import queryChatMember from './queryChatMember';
+import chatMember from './queryChatMember';
 
 export const resolver = {
   Query: {
-    queryChatMember,
+    chatMember,
     chatMemberStatistics,
     chatMemberHourlyStatistics
   }
