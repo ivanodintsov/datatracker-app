@@ -1,36 +1,36 @@
 type Average {
-  daily: Int
-  hours: Int
+  daily: NFormatNumber
+  hours: NFormatNumber
 }
 
 type ChatStatistics {
   chat: Float!
-  text: Int
-  voice: Int
-  video_note: Int
-  sticker: Int
-  video: Int
-  audio: Int
-  document: Int
-  photo: Int
-  reply: Int
-  forward: Int
-  edit: Int
-  pinned: Int
-  contact: Int
-  location: Int
-  game: Int
-  venue: Int
-  invoice: Int
-  channel_chat_created: Int
-  supergroup_chat_created: Int
-  group_chat_created: Int
-  migrate_to_chat: Int
-  left_chat_member: Int
-  new_chat_members: Int
-  new_chat_photo: Int
-  new_chat_title: Int
-  total: Int
+  text: NFormatNumber
+  voice: NFormatNumber
+  video_note: NFormatNumber
+  sticker: NFormatNumber
+  video: NFormatNumber
+  audio: NFormatNumber
+  document: NFormatNumber
+  photo: NFormatNumber
+  reply: NFormatNumber
+  forward: NFormatNumber
+  edit: NFormatNumber
+  pinned: NFormatNumber
+  contact: NFormatNumber
+  location: NFormatNumber
+  game: NFormatNumber
+  venue: NFormatNumber
+  invoice: NFormatNumber
+  channel_chat_created: NFormatNumber
+  supergroup_chat_created: NFormatNumber
+  group_chat_created: NFormatNumber
+  migrate_to_chat: NFormatNumber
+  left_chat_member: NFormatNumber
+  new_chat_members: NFormatNumber
+  new_chat_photo: NFormatNumber
+  new_chat_title: NFormatNumber
+  total: NFormatNumber
   date: Date
   activeDays: Int
   day: Int
@@ -52,10 +52,15 @@ type ChatFullStatistics {
   weekDaysStatistics: [ChatStatistics]
 }
 
+type ChatHourlyStatistics {
+  data: [ChatStatistics]
+  range: Range
+}
+
 type Query {
   chatStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatStatistics
   chatUsersActivity(chat: Float!, range: [Date]!, timeZone: String): [ChatUsersActivity]
   chatQuarterStatistics(chat: Float!, range: [Date]!, timeZone: String): [ChatStatistics]
-  chatHourlyStatistics(chat: Float!, range: [Date]!, timeZone: String): [ChatStatistics]
+  chatHourlyStatistics(chat: Float!): ChatHourlyStatistics
   chatFullStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatFullStatistics
 }
