@@ -2,7 +2,7 @@ import R from 'ramda';
 import { Chat } from '../../../models';
 import { ResourceError } from '../errors';
 
-const findChatById = async (_, { id }) => {
+const chat = async (_, { id }) => {
   const chat = await Chat.findOne({ id });
 
   if (R.isNil(chat)) {
@@ -12,4 +12,4 @@ const findChatById = async (_, { id }) => {
   return chat;
 };
 
-export default findChatById;
+export default chat;

@@ -1,9 +1,9 @@
-import findChatById from './queryFindChatById';
+import chat from './queryChat';
 import userStatistics from './queryUserStatistics';
 
 export const resolver = {
   Query: {
-    findChatById,
+    chat,
     userStatistics
   }
 };
