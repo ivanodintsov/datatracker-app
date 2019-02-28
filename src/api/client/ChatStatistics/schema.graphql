@@ -60,7 +60,6 @@ type ChatHourlyStatistics {
 type Query {
   chatStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatStatistics
   chatUsersActivity(chat: Float!, range: [Date]!, timeZone: String): [ChatUsersActivity]
-  chatQuarterStatistics(chat: Float!, range: [Date]!, timeZone: String): [ChatStatistics]
   chatHourlyStatistics(chat: Float!): ChatHourlyStatistics
   chatFullStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatFullStatistics
 }
