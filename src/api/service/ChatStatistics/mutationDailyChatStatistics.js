@@ -1,6 +1,6 @@
 import R from 'ramda';
 import moment from 'moment-timezone';
-import { ChatMembersStats, Chat, StickerSet, ChatMember } from '../../../models';
+import { ChatMembersStats, Chat, StickerSet, ChatMember, ChatDailyStatistics } from '../../../models';
 import logError from '../../../helpers/logError';
 
 const concatPropName = (str, obj) => R.pipe(
@@ -64,6 +64,13 @@ const updateChatMembersStats = async ({
 };
 
 const getQuarterMinutes = minutes => 15 * Math.floor((minutes * 4) / 60);
+const dailyFindAndUpdate = async ({
+  chat, date, data
+}) => await ChatDailyStatistics.findOneAndUpdate(
+  { chat, date },
+  { $inc: data },
+  { upsert: true, setDefaultsOnInsert: true }
+);
 
 export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ...input } }) => {
   const { chat, date, from, ...data } = input;
@@ -80,6 +87,12 @@ export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ..
     await ChatMember.updateOne({ chat: chat, user: from }, { $inc: chatLifetime });
     await updateChatMembersStats({ ...input, querterDate, startDate });
     await updateStickerSetsStats({ chat, from, sticker_data });
+
+    const hoursStats = concatPropName(`hours.${querterDate.hour()}.`, data);
+    const chatDailyStatistics = await dailyFindAndUpdate({
+      chat, date: startDate,
+      data: { ...data, ...hoursStats }
+    });
   } catch (error) {
     logError(error, input);
   }
