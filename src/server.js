@@ -1,8 +1,8 @@
 import express from 'express';
 import R from 'ramda';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import { serviceSchema, clientSchema } from './api';
-import { allowedCorsUrls } from './config';
+import { allowedCorsUrls, SERVICE_API_TOKEN } from './config';
 
 const app = express();
 
@@ -14,10 +14,21 @@ const originCors = obj => (origin, callback) => {
   }
 };
 
+const checkToken = R.equals(SERVICE_API_TOKEN);
 const backendServer = new ApolloServer({
   schema: serviceSchema,
   cacheControl: true,
   introspection: true,
+  context: ({ req }) => {
+    const token = req.headers.authorization || '';
+    const user = checkToken(token);
+
+    if (!user) {
+      throw new AuthenticationError('Invalid token');
+    }
+
+    return { user };
+  },
 });
 backendServer.applyMiddleware({ app, path: '/service' });
 
