@@ -1,3 +1,4 @@
+import R from 'ramda';
 import mongoose from 'mongoose';
 const Types = mongoose.Schema.Types;
 
@@ -65,5 +66,35 @@ const base = (addFields = {}, opts = {}) => new mongoose.Schema(
     ...opts
   }
 );
+
+export const baseStatisticsDefault = {
+  text: 0,
+  voice: 0,
+  video_note: 0,
+  sticker: 0,
+  audio: 0,
+  video: 0,
+  document: 0,
+  photo: 0,
+  reply: 0,
+  forward: 0,
+  edit: 0,
+  pinned: 0,
+  contact: 0,
+  location: 0,
+  game: 0,
+  venue: 0,
+  invoice: 0,
+  channel_chat_created: 0,
+  supergroup_chat_created: 0,
+  group_chat_created: 0,
+  migrate_to_chat: 0,
+  left_chat_member: 0,
+  new_chat_members: 0,
+  new_chat_photo: 0,
+  new_chat_title: 0,
+  total: 0
+};
+export const baseStatisticsKeys = R.keys(baseStatisticsDefault);
 
 export default base;
