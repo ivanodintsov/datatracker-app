@@ -19,3 +19,5 @@ export const apolloEngineConfig = {
 };
 
 export const allowedCorsUrls = {};
+
+export const SERVICE_API_TOKEN = 'SERVICE_API_TOKEN';
