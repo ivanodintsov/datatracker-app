@@ -2,6 +2,8 @@ import R from 'ramda';
 import moment from 'moment-timezone';
 import { ChatMembersStats, Chat, StickerSet, ChatMember, ChatDailyStatistics } from '../../../models';
 import logError from '../../../helpers/logError';
+import { baseStatisticsKeys, baseStatisticsDefault } from '../../../models/Statistics/base';
+import { divideObject, sumObjByKey } from '../../../helpers/object';
 
 const concatPropName = (str, obj) => R.pipe(
   R.toPairs,
@@ -64,6 +66,16 @@ const updateChatMembersStats = async ({
 };
 
 const getQuarterMinutes = minutes => 15 * Math.floor((minutes * 4) / 60);
+const calculateHoursAvg = R.pipe(
+  R.values,
+  R.reduce(
+    (acc, el) => R.reduce(sumObjByKey(el), acc, baseStatisticsKeys),
+    baseStatisticsDefault
+  ),
+  divideObject(R.__, baseStatisticsKeys)
+);
+
+
 const dailyFindAndUpdate = async ({
   chat, date, data
 }) => await ChatDailyStatistics.findOneAndUpdate(
@@ -71,6 +83,24 @@ const dailyFindAndUpdate = async ({
   { $inc: data },
   { upsert: true, setDefaultsOnInsert: true }
 );
+
+const createYesterdayStatistics = async ({ chat, date }) => {
+  try {
+    const yesterday = moment(date).subtract(1, 'days').toDate();
+    const chatDailyYesterday = await ChatDailyStatistics.findOne(
+      { chat, date: yesterday },
+      { hours: 1 }
+    );
+    const hours = R.path([ 'hours' ], chatDailyYesterday);
+  
+    if (hours) {
+      chatDailyYesterday.set('day_avg', calculateHoursAvg(hours));
+      chatDailyYesterday.save();
+    }
+  } catch (err) {
+    return;
+  }
+};
 
 export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ...input } }) => {
   const { chat, date, from, ...data } = input;
@@ -93,6 +123,10 @@ export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ..
       chat, date: startDate,
       data: { ...data, ...hoursStats }
     });
+    
+    if (R.isNil(chatDailyStatistics)) {
+      createYesterdayStatistics({ chat, date: startDateMoment });
+    }
   } catch (error) {
     logError(error, input);
   }
