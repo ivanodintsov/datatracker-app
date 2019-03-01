@@ -66,19 +66,20 @@ const updateChatMembersStats = async ({
 const getQuarterMinutes = minutes => 15 * Math.floor((minutes * 4) / 60);
 
 export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ...input } }) => {
-  const { chat, date, ...data } = input;
+  const { chat, date, from, ...data } = input;
 
   try {
     const chatLifetime = concatPropName('statistics.', data);
     const querterDate = moment(date);
-    const startDate = moment(date).startOf('day').toDate();
+    const startDateMoment = moment(date).startOf('day');
+    const startDate = startDateMoment.toDate();
     const querter = getQuarterMinutes(querterDate.minutes());
     querterDate.startOf('hour').minutes(querter);
 
     await Chat.updateOne({ id: chat }, { $inc: chatLifetime });
-    await ChatMember.updateOne({ chat: chat, user: input.from }, { $inc: chatLifetime });
+    await ChatMember.updateOne({ chat: chat, user: from }, { $inc: chatLifetime });
     await updateChatMembersStats({ ...input, querterDate, startDate });
-    await updateStickerSetsStats({ chat, from: input.from, sticker_data });
+    await updateStickerSetsStats({ chat, from, sticker_data });
   } catch (error) {
     logError(error, input);
   }
