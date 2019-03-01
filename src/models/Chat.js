@@ -30,6 +30,7 @@ export const ChatSchema = new mongoose.Schema(
     can_set_sticker_set: { type: Boolean },
     members_count: { type: Number },
     time_zone: { type: String },
+    cron_updated_at: { type: Date, default: Date.now },
     statistics: { type: StatisticsSchema, default: StatisticsSchema }
   },
   {

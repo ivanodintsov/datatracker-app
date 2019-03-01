@@ -99,6 +99,7 @@ input ChatUpdateInput {
   can_set_sticker_set: Boolean
   members_count: Int
   statistics: StatisticsBaseInput
+  cron_updated_at: Date
 }
 
 type UserAction {
