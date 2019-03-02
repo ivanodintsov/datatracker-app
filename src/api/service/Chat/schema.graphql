@@ -1,6 +1,8 @@
 type ChatPhoto {
-  small_file: String!
-  big_file: String!
+  small_file_id: String
+  big_file_id: String
+  small_file: String
+  big_file: String
 }
 
 type Chat {
