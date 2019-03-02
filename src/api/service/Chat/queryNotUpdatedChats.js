@@ -5,7 +5,8 @@ const notUpdatedChats = async (_, { days, limit }) => {
   const date = moment().startOf('day').add(-days, 'days');
 
   return await Chat.find({
-    cron_updated_at: { $lte: date }
+    cron_updated_at: { $lte: date },
+    is_active: true,
   }).limit(limit);
 };
 

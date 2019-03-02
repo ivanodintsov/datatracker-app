@@ -100,6 +100,7 @@ input ChatUpdateInput {
   members_count: Int
   statistics: StatisticsBaseInput
   cron_updated_at: Date
+  is_active: Boolean
 }
 
 type UserAction {

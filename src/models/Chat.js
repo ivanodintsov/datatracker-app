@@ -31,7 +31,8 @@ export const ChatSchema = new mongoose.Schema(
     members_count: { type: Number },
     time_zone: { type: String },
     cron_updated_at: { type: Date, default: Date.now },
-    statistics: { type: StatisticsSchema, default: StatisticsSchema }
+    statistics: { type: StatisticsSchema, default: StatisticsSchema },
+    is_active: { type: Boolean, default: true },
   },
   {
     timestamps: true
