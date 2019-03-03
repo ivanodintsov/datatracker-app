@@ -34,6 +34,7 @@ export const ChatSchema = new mongoose.Schema(
     statistics: { type: StatisticsSchema, default: StatisticsSchema },
     is_active: { type: Boolean, default: true },
     active_days: { type: Types.Long, default: 0 },
+    avg_statistics_yesterday: { type: StatisticsSchema, default: StatisticsSchema },
   },
   {
     timestamps: true
