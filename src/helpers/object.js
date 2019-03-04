@@ -13,6 +13,12 @@ export const sumObjByKey = obj1 => (obj2, key) => {
 
 export const divideObject = R.reduce((acc, key) => R.over(
   R.lensProp(key),
-  R.pipe(R.divide(R.__, 24), Math.floor),
+  R.divide(R.__, 24),
   acc
 ));
+
+export const concatPropName = R.curry((str, obj) => R.pipe(
+  R.toPairs,
+  R.map(R.over(R.lensIndex(0), R.concat(str))),
+  R.fromPairs
+)(obj));

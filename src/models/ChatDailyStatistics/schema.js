@@ -12,5 +12,6 @@ export const ChatDailyStatisticsSchema = base({
     ),
   },
   day_avg: { type: dayAvgSchema },
+  is_processed: { type: Boolean, default: false },
 });
 ChatDailyStatisticsSchema.index({ chat: 1, date: -1 }, { unique: true });
