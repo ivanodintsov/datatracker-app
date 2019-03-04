@@ -67,4 +67,5 @@ input ChatStatisticsInput {
 type Mutation {
   dailyChatStatistics(input: ChatStatisticsInput!): Boolean
   createPreviousStatistics(id: Float!, date: Date!): Boolean
+  createDailyStatistics(chat: Float!, date: Date!): Boolean
 }
