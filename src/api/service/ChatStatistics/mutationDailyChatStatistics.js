@@ -1,7 +1,8 @@
 import moment from 'moment-timezone';
-import { ChatMembersStats, Chat, StickerSet, ChatMember, ChatDailyStatistics } from '../../../models';
+import { ChatMembersStats, Chat, StickerSet, ChatMember } from '../../../models';
 import logError from '../../../helpers/logError';
 import { concatPropName } from '../../../helpers/object';
+import dailyFindAndUpdate from './mutationCreateDailyStatistics';
 
 const updateStickerSetsStats = async ({
   from,
@@ -59,14 +60,6 @@ const updateChatMembersStats = async ({
 
 const getQuarterMinutes = minutes => 15 * Math.floor((minutes * 4) / 60);
 
-const dailyFindAndUpdate = async ({
-  chat, date, data
-}) => await ChatDailyStatistics.findOneAndUpdate(
-  { chat, date },
-  { $inc: data },
-  { upsert: true, setDefaultsOnInsert: true }
-);
-
 export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ...input } }) => {
   const { chat, date, from, ...data } = input;
 
@@ -84,7 +77,7 @@ export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ..
     await updateStickerSetsStats({ chat, from, sticker_data });
 
     const hoursStats = concatPropName(`hours.${querterDate.hour()}.`, data);
-    await dailyFindAndUpdate({
+    await dailyFindAndUpdate(null, {
       chat, date: startDate,
       data: { ...data, ...hoursStats }
     });
