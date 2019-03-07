@@ -16,4 +16,4 @@ export const ChatDailyStatisticsSchema = base({
   is_processed: { type: Boolean, default: false },
   percentage_change: { type: percentageChangeSchema },
 });
-ChatDailyStatisticsSchema.index({ chat: 1, date: -1 }, { unique: true });
+ChatDailyStatisticsSchema.index({ chat: 1, date: 1 }, { unique: true });
