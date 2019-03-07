@@ -6,6 +6,7 @@ import { Chat, ChatDailyStatistics } from '../../../models';
 import { concatPropName } from '../../../helpers/object';
 import async from 'async';
 import asyncPromisified from '../../../helpers/async';
+import percentageChangeObj from '../../../helpers/percentageChange';
 
 const calculateHoursAvg = R.pipe(
   R.values,
@@ -35,8 +36,28 @@ const incrementYesterday = async (chatDailyDocument) => {
   );
 };
 
+const calculatePercentageChange = async (todayDocument) => {
+  const yesterday = moment(todayDocument.date)
+    .startOf('day')
+    .subtract(1, 'days')
+    .toDate();
+
+  const yesterdayDocument = await ChatDailyStatistics.findOne(
+    { chat: todayDocument.chat, date: yesterday },
+    createYesterdayProjection,
+    { lean: true }
+  ).exec();
+
+  if (!yesterdayDocument) {
+    return;
+  }
+
+  return percentageChangeObj(baseStatisticsKeys, [yesterdayDocument, todayDocument]);
+};
+
 const createPreviousStatisticsSingle = async chatDailyYesterday => {
   const hours = R.path([ 'hours' ], chatDailyYesterday);
+  const percentageChange = await calculatePercentageChange(chatDailyYesterday);
   const avgStatistics = calculateHoursAvg(hours);
   
   const update = {
@@ -45,6 +66,10 @@ const createPreviousStatisticsSingle = async chatDailyYesterday => {
       is_processed: true,
     }
   };
+
+  if (percentageChange) {
+    update.$set.percentage_change = percentageChange;
+  }
 
   await ChatDailyStatistics.updateOne(
     {
