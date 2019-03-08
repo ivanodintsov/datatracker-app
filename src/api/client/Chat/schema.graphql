@@ -3,6 +3,14 @@ type ChatPhoto {
   big_file: String
 }
 
+type AvgHour {
+  total: Float
+}
+
+type AvgDaily {
+  total: Float
+}
+
 type Chat {
   id: Float!
   type: String!
@@ -18,6 +26,8 @@ type Chat {
   can_set_sticker_set: Boolean
   members_count: NFormatNumber
   statistics: Statistics
+  avg_hourly: AvgHour
+  avg_daily: AvgDaily
 }
 
 type Statistics {
