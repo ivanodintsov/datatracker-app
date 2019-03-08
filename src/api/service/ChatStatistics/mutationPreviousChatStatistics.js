@@ -19,7 +19,8 @@ const calculateHoursAvg = R.pipe(
 );
 
 const createProjectionFromArray = R.reduceRight(R.assoc(R.__, 1), {});
-const createYesterdayProjection = createProjectionFromArray([...baseStatisticsKeys, 'hours', 'chat', 'date']);
+const percentageChangeKeys = [...baseStatisticsKeys, 'members_count'];
+const createYesterdayProjection = createProjectionFromArray([...percentageChangeKeys, 'hours', 'chat', 'date']);
 const incrementYesterday = async (chatDailyDocument) => {
   const yesterdayDayStatistics = R.pipe(
     R.pick(baseStatisticsKeys),
