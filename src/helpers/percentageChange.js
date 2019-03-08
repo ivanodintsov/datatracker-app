@@ -26,7 +26,7 @@ export const percentageChange = (newNumber, oldNumber) => R.pipe(
  */
 const percentageChangeObj = (props, data) => R.reduce(
   (acc, key) => R.pipe(
-    R.converge(percentageChange, [R.pathOr(1, [1, key]), R.pathOr(1, [0, key])]),
+    R.converge(percentageChange, [R.pathOr(0, [1, key]), R.pathOr(0, [0, key])]),
     R.assoc(key, R.__, acc)
   )(data),
   {},
