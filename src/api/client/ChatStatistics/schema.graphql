@@ -3,6 +3,16 @@ type Average {
   hours: NFormatNumber
 }
 
+type PercentageChange {
+  total: Percentage
+  members_count: Percentage
+}
+
+type SubtractChange {
+  total: NFormatNumber
+  members_count: NFormatNumber
+}
+
 type ChatStatistics {
   chat: Float!
   text: NFormatNumber
@@ -36,6 +46,9 @@ type ChatStatistics {
   day: Int
   hour: Int
   avg: Average
+  percentage_change: PercentageChange
+  subtract_change: SubtractChange
+  members_count: NFormatNumber
 }
 
 type ChatUsersActivity {
@@ -58,7 +71,7 @@ type ChatHourlyStatistics {
 }
 
 type Query {
-  chatStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatStatistics
+  chatStatistics4days(chat: Float!): [ChatStatistics]
   chatUsersActivity(chat: Float!, range: [Date]!, timeZone: String): [ChatUsersActivity]
   chatHourlyStatistics(chat: Float!): ChatHourlyStatistics
   chatFullStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatFullStatistics
