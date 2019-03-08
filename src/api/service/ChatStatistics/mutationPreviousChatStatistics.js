@@ -1,5 +1,4 @@
 import R from 'ramda';
-import moment from 'moment-timezone';
 import { baseStatisticsKeys, baseStatisticsDefault } from '../../../models/Statistics/base';
 import { divideObject, sumObjByKey } from '../../../helpers/object';
 import { Chat, ChatDailyStatistics } from '../../../models';
@@ -7,6 +6,7 @@ import { concatPropName } from '../../../helpers/object';
 import async from 'async';
 import asyncPromisified from '../../../helpers/async';
 import percentageChangeObj from '../../../helpers/percentageChange';
+import { yesterdayDate } from '../../../helpers/moment';
 
 const calculateHoursAvg = R.pipe(
   R.values,
@@ -37,11 +37,8 @@ const incrementYesterday = async (chatDailyDocument) => {
 };
 
 const calculatePercentageChange = async (todayDocument) => {
-  const yesterday = moment(todayDocument.date)
-    .startOf('day')
-    .subtract(1, 'days')
-    .toDate();
-
+  const hours = R.path([ 'hours' ], todayDocument);
+  const yesterday = yesterdayDate(todayDocument.date);
   const yesterdayDocument = await ChatDailyStatistics.findOne(
     { chat: todayDocument.chat, date: yesterday },
     createYesterdayProjection,
@@ -56,7 +53,6 @@ const calculatePercentageChange = async (todayDocument) => {
 };
 
 const createPreviousStatisticsSingle = async chatDailyYesterday => {
-  const hours = R.path([ 'hours' ], chatDailyYesterday);
   const percentageChange = await calculatePercentageChange(chatDailyYesterday);
   const avgStatistics = calculateHoursAvg(hours);
   
@@ -83,10 +79,7 @@ const createPreviousStatisticsSingle = async chatDailyYesterday => {
 };
 const createPreviousStatistics = async (_, { id: chatId, date }) => {
   try {
-    const yesterday = moment(date)
-      .startOf('day')
-      .subtract(1, 'days')
-      .toDate();
+    const yesterday = yesterdayDate(date);
 
     const chatDailyYesterdayList = await ChatDailyStatistics.find(
       { chat: chatId, date: { $lte: yesterday }, is_processed: false },
