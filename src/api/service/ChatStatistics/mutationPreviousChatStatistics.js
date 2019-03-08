@@ -7,6 +7,7 @@ import async from 'async';
 import asyncPromisified from '../../../helpers/async';
 import percentageChangeObj from '../../../helpers/percentageChange';
 import { yesterdayDate } from '../../../helpers/moment';
+import subtractChangeObj from '../../../helpers/subtractChange';
 
 const calculateHoursAvg = R.pipe(
   R.values,
@@ -36,7 +37,7 @@ const incrementYesterday = async (chatDailyDocument) => {
   );
 };
 
-const calculatePercentageChange = async (todayDocument) => {
+const createPreviousStatisticsSingle = async todayDocument => {
   const hours = R.path([ 'hours' ], todayDocument);
   const yesterday = yesterdayDate(todayDocument.date);
   const yesterdayDocument = await ChatDailyStatistics.findOne(
@@ -44,16 +45,6 @@ const calculatePercentageChange = async (todayDocument) => {
     createYesterdayProjection,
     { lean: true }
   ).exec();
-
-  if (!yesterdayDocument) {
-    return;
-  }
-
-  return percentageChangeObj(baseStatisticsKeys, [yesterdayDocument, todayDocument]);
-};
-
-const createPreviousStatisticsSingle = async chatDailyYesterday => {
-  const percentageChange = await calculatePercentageChange(chatDailyYesterday);
   const avgStatistics = calculateHoursAvg(hours);
   
   const update = {
@@ -63,19 +54,13 @@ const createPreviousStatisticsSingle = async chatDailyYesterday => {
     }
   };
 
-  if (percentageChange) {
-    update.$set.percentage_change = percentageChange;
+  if (yesterdayDocument) {
+    update.$set.percentage_change = percentageChangeObj(percentageChangeKeys, [yesterdayDocument, todayDocument]);
+    update.$set.subtract_change = subtractChangeObj(percentageChangeKeys, [yesterdayDocument, todayDocument]);
   }
 
-  await ChatDailyStatistics.updateOne(
-    {
-      chat: chatDailyYesterday.chat,
-      date: chatDailyYesterday.date,
-    },
-    update
-  );
-
-  await incrementYesterday(chatDailyYesterday);
+  await ChatDailyStatistics.updateOne({ chat: todayDocument.chat, date: todayDocument.date, }, update);
+  await incrementYesterday(todayDocument);
 };
 const createPreviousStatistics = async (_, { id: chatId, date }) => {
   try {
