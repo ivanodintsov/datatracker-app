@@ -1,6 +1,7 @@
-import { baseTypes, NFormatNumber } from '../../baseTypes';
+import { baseTypes, NFormatNumber, Percentage } from '../../baseTypes';
 
 export const resolver = {
   ...baseTypes,
-  NFormatNumber
+  NFormatNumber,
+  Percentage,
 };

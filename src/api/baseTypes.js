@@ -12,6 +12,15 @@ export const NFormatNumber = new GraphQLScalarType({
   }
 });
 
+export const Percentage = new GraphQLScalarType({
+  name: 'Percentage',
+  description: 'Format number(49.12345 => 49.12)',
+  
+  serialize(value) {
+    return Number.parseFloat(value).toFixed(2);
+  }
+});
+
 export const baseTypes = {
   Date: new GraphQLScalarType({
     name: 'Date',

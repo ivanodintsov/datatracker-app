@@ -1,6 +1,7 @@
 scalar Date
 scalar Long
 scalar NFormatNumber
+scalar Percentage
 
 type Range {
   from: Date!
