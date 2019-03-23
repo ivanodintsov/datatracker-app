@@ -1,6 +1,11 @@
 import R from 'ramda';
 import { ChatMember, User, Chat } from '../../../models';
 import { ResourceError } from '../errors';
+import moment from 'moment-timezone';
+
+const isOnline = (date, duration = 10) => {
+  return moment().subtract(duration, 'minutes').isSameOrBefore(date, 'minutes');
+};
 
 const chatMember = async (_, { chat: chatId, user: userId }) => {
   const member = await ChatMember.findOne({ chat: chatId, user: userId });
@@ -25,7 +30,8 @@ const chatMember = async (_, { chat: chatId, user: userId }) => {
   return {
     ...member.toObject(),
     user,
-    chat
+    chat,
+    online: member.last_activity_date && isOnline(member.last_activity_date),
   };
 };
 

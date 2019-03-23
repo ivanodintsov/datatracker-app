@@ -58,6 +58,8 @@ type ChatMember {
   until_date: Int
   status: String
   active: Boolean
+  last_message_date: Date
+  online: Boolean
 }
 
 type Query {
