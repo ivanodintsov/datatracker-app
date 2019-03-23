@@ -27,6 +27,10 @@ export const baseTypes = {
     description: 'Date custom scalar type',
 
     parseValue(value) {
+      if (R.is(Number, value)) {
+        return new Date(value * 1000);
+      }
+
       return new Date(value);
     },
 
