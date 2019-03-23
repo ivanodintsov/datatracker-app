@@ -60,7 +60,7 @@ const updateChatMembersStats = async ({
 
 const getQuarterMinutes = minutes => 15 * Math.floor((minutes * 4) / 60);
 
-export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ...input } }) => {
+export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ...input }, edit_date }) => {
   const { chat, date, from, ...data } = input;
 
   try {
@@ -72,7 +72,16 @@ export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ..
     querterDate.startOf('hour').minutes(querter);
 
     await Chat.updateOne({ id: chat }, { $inc: chatLifetime });
-    await ChatMember.updateOne({ chat: chat, user: from }, { $inc: chatLifetime });
+    await ChatMember.updateOne(
+      { chat: chat, user: from },
+      {
+        $inc: chatLifetime,
+        $set: {
+          last_message_date: date,
+          last_activity_date: edit_date || date
+        }
+      },
+    );
     await updateChatMembersStats({ ...input, querterDate, startDate });
     await updateStickerSetsStats({ chat, from, sticker_data });
 

@@ -62,10 +62,11 @@ input ChatStatisticsInput {
   new_chat_members: Int
   new_chat_photo: Int
   new_chat_title: Int
+  edit_date: Int
 }
 
 type Mutation {
-  dailyChatStatistics(input: ChatStatisticsInput!): Boolean
+  dailyChatStatistics(input: ChatStatisticsInput!, edit_date: Date): Boolean
   createPreviousStatistics(id: Float!, date: Date!): Boolean
   createDailyStatistics(chat: Float!, date: Date!): Boolean
 }
