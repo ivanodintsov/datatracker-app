@@ -61,7 +61,13 @@ export const ChatMemberSchema = new mongoose.Schema(
     active: {
       type: Boolean
     },
-    statistics: { type: StatisticsSchema, default: StatisticsSchema }
+    statistics: { type: StatisticsSchema, default: StatisticsSchema },
+    last_message_date: {
+      type: Date,
+    },
+    last_activity_date: {
+      type: Date,
+    },
   },
   {
     timestamps: true
