@@ -13,6 +13,11 @@ type SubtractChange {
   members_count: NFormatNumber
 }
 
+type SubtractChangeFull {
+  total: Int
+  members_count: Int
+}
+
 type ChatStatistics {
   chat: Float!
   text: NFormatNumber
@@ -65,13 +70,22 @@ type ChatFullStatistics {
   weekDaysStatistics: [ChatStatistics]
 }
 
+type ChatStatisticsFull {
+  text: Int
+  total: Int
+  sticker: Int
+  members_count: Int
+  percentage_change: PercentageChange
+  subtract_change: SubtractChangeFull
+}
+
 type ChatHourlyStatistics {
   data: [ChatStatistics]
   range: Range
 }
 
 type Query {
-  chatStatistics4days(chat: Float!): [ChatStatistics]
+  chatStatistics4days(chat: Float!): [ChatStatisticsFull]
   chatUsersActivity(chat: Float!, range: [Date]!, timeZone: String): [ChatUsersActivity]
   chatHourlyStatistics(chat: Float!): ChatHourlyStatistics
   chatFullStatistics(chat: Float!, range: [Date]!, timeZone: String): ChatFullStatistics
