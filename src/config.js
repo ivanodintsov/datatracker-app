@@ -24,6 +24,13 @@ export const apolloEngineConfig = {
   apiKey: env.APOLLO_ENGINE
 };
 
-export const allowedCorsUrls = {};
 
-export const SERVICE_API_TOKEN = 'SERVICE_API_TOKEN';
+export const redis = {
+  port: 6379,
+  host: 'redis',
+  password: 'foobared',
+};
+
+export const queues = {
+  redis,
+};
