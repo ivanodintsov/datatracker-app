@@ -1,8 +1,13 @@
-import { baseStatistics } from './Statistics/base';
+import { baseStatistics } from '../Statistics/base';
 import mongoose from 'mongoose';
 const Types = mongoose.Schema.Types;
 
-const StatisticsSchema = baseStatistics({}, { _id: false });
+const StatisticsSchema = baseStatistics({
+  reputataion: {
+    type: Number,
+    default: 0,
+  },
+}, { _id: false });
 export const ChatMemberSchema = new mongoose.Schema(
   {
     chat: {
@@ -75,6 +80,36 @@ export const ChatMemberSchema = new mongoose.Schema(
 );
 ChatMemberSchema.index({ chat: 1, user: 1 }, { unique: true });
 ChatMemberSchema.index({ status: 1 });
+
+const CHANGE_REPUTATION_TYPE = {
+  INCREASE: {
+    changer: 1,
+  },
+  DECREASE: {
+    changer: -1,
+  },
+};
+
+ChatMemberSchema.statics.changeReputation = async function changeReputation (opts) {
+  const { chat, user, type } = opts;
+  const changerType = CHANGE_REPUTATION_TYPE[type];
+
+  if (!changerType) {
+    return;
+  }
+
+  const member = this
+    .where('chat', chat)
+    .where('user', user)
+    .update({
+      $inc: {
+        'statistics.reputataion': changerType.changer,
+      },
+    });
+
+  return member;
+};
+
 const ChatMember = mongoose.model('chat_member', ChatMemberSchema);
 
 export default ChatMember;
