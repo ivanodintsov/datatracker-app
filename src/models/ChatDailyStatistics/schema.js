@@ -1,13 +1,17 @@
 import R from 'ramda';
 import base, { baseStatistics } from '../Statistics/base';
 
-const hoursSchema = baseStatistics({}, { _id: false });
+const hoursSchema = baseStatistics({
+  reputation: { type: Number, default: 0 },
+}, { _id: false });
 const dayAvgSchema = baseStatistics({}, { _id: false });
 const percentageChangeSchema = baseStatistics({
   members_count: { type: Number, default: 0 },
+  reputation: { type: Number, default: 0 },
 }, { _id: false });
 const subtractChangeSchema = baseStatistics({
   members_count: { type: Number, default: 0 },
+  reputation: { type: Number, default: 0 },
 }, { _id: false });
 export const ChatDailyStatisticsSchema = base({
   hours: {
@@ -22,5 +26,6 @@ export const ChatDailyStatisticsSchema = base({
   percentage_change: { type: percentageChangeSchema },
   members_count: { type: Number, default: 0 },
   subtract_change: { type: subtractChangeSchema },
+  reputation: { type: Number, default: 0 },
 });
 ChatDailyStatisticsSchema.index({ chat: 1, date: 1 }, { unique: true });
