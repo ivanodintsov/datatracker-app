@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const Types = mongoose.Schema.Types;
 
 const StatisticsSchema = baseStatistics({
-  reputataion: {
+  reputation: {
     type: Number,
     default: 0,
   },
@@ -101,9 +101,9 @@ ChatMemberSchema.statics.changeReputation = async function changeReputation (opt
   const member = this
     .where('chat', chat)
     .where('user', user)
-    .update({
+    .updateOne({
       $inc: {
-        'statistics.reputataion': changerType.changer,
+        'statistics.reputation': changerType.changer,
       },
     });
 
