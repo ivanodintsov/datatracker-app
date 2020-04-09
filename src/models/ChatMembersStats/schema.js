@@ -15,7 +15,8 @@ const ChatMembersStats = baseStatistics({
   from: { type: Number, required: true },
   date: { type: Date, required: true },
   date_day: { type: Date, required: true },
-  last_message_date: { type: Date, required: true }
+  last_message_date: { type: Date, required: true },
+  reputation: { type: Number, default: 0 },
 }, {
   timestamps: true
 });
