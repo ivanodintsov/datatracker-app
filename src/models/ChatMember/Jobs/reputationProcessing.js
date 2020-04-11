@@ -19,9 +19,9 @@ reputationQueue.process(NAME, 5, async function (job) {
   }
 
   await ChatMember.changeReputation({
-    chat: reputation.replyedMessage.chat,
-    user: reputation.replyedMessage.from,
-    type: reputation.reaction.type,
+    chat: reputation.repliedMessage.chat,
+    user: reputation.repliedMessage.from,
+    type: reputation.reaction,
   });
 
   ChatDailyReputation.addToQueue({ reputation, message });

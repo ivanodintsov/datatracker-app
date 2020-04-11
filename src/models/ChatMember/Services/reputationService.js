@@ -26,7 +26,7 @@ const reputationService = async (message) => {
 
   return {
     reaction,
-    replyedMessage: isSameMemberMessage,
+    repliedMessage: isSameMemberMessage,
   };
 };
 
