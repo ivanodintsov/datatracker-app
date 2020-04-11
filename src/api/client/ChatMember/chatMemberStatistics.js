@@ -9,7 +9,10 @@ const chatMemberStatistics = async (_, { chat, user }) => {
     throw new ResourceError();
   }
 
-  return member.statistics;
+  return {
+    ...member.statistics.toJSON(),
+    reputation: member.reputation,
+  };
 };
 
 export default chatMemberStatistics;

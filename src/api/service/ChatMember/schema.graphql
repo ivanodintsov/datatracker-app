@@ -1,3 +1,10 @@
+type Reputation {
+  positive: NFormatNumber
+  total: NFormatNumber
+  negative: NFormatNumber
+  changes: NFormatNumber
+}
+
 type ChatMember {
   _id: ID
   chat: Float!
@@ -87,6 +94,7 @@ type ChatMemberStatistics {
   left_chat_member: NFormatNumber
   new_chat_members: NFormatNumber
   new_chat_photo: NFormatNumber
+  reputation: Reputation
 }
 
 type Query {
