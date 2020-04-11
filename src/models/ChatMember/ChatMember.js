@@ -75,6 +75,7 @@ export const ChatMemberSchema = new mongoose.Schema(
       type: Date,
     },
     reputation: { type: ReputationSchema, default: ReputationSchema },
+    reputationChanges: { type: ReputationSchema, default: ReputationSchema },
   },
   {
     timestamps: true
@@ -102,6 +103,11 @@ const changeReputation = async function (path, opts) {
 ChatMemberSchema.statics.changeReputation = async function (opts) {
   return changeReputation.bind(this)('reputation', opts);
 };
+
+ChatMemberSchema.statics.changeReputationChanges = async function (opts) {
+  return changeReputation.bind(this)('reputationChanges', opts);
+};
+
 const ChatMember = mongoose.model('chat_member', ChatMemberSchema);
 
 export default ChatMember;
