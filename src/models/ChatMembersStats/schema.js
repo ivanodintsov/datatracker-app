@@ -18,6 +18,7 @@ const ChatMembersStats = baseStatistics({
   date_day: { type: Date, required: true },
   last_message_date: { type: Date, required: true },
   reputation: { type: ReputationSchema, default: ReputationSchema },
+  reputationChanges: { type: ReputationSchema, default: ReputationSchema },
 }, {
   timestamps: true
 });
@@ -71,6 +72,10 @@ const changeReputation = async function (path, opts) {
 
 ChatMembersStats.statics.changeReputation = async function (opts) {
   return changeReputation.bind(this)('reputation', opts);
+};
+
+ChatMembersStats.statics.changeReputationChanges = async function (opts) {
+  return changeReputation.bind(this)('reputationChanges', opts);
 };
 
 export default ChatMembersStats;
