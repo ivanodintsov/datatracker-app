@@ -4,6 +4,7 @@ import reputationService from '../Services/reputationService';
 import ChatMember from '../ChatMember';
 import ChatDailyReputation from '../../ChatDailyStatistics/Jobs/reputationProcessing';
 import ChatMembersStatsReputation from '../../ChatMembersStats/Jobs/reputationProcessing';
+import ChatMemberReputationChanges from './reputationChanges';
 
 const reputationQueue = new Queue('app_reputation', queues);
 
@@ -24,6 +25,7 @@ reputationQueue.process(NAME, 5, async function (job) {
     type: reputation.reaction,
   });
 
+  ChatMemberReputationChanges.addToQueue({ reputation, message });
   ChatDailyReputation.addToQueue({ reputation, message });
   ChatMembersStatsReputation.addToQueue({ reputation, message });
 
