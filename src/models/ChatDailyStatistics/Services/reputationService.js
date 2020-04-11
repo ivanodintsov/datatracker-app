@@ -6,19 +6,15 @@ const reputationService = async ({
   message,
 }) => {
   const dates = getStatisticsHour(message.date);
-  const hour = dates.querter.hour()
-  const reputationChanger = reputation.reaction.changer;
-  const replyedMessage = reputation.replyedMessage;
+  const hour = dates.quarter.hour()
+  const repliedMessage = reputation.repliedMessage;
 
-  await ChatDailyStatistics
-    .where('chat', replyedMessage.chat)
-    .where('date', dates.date)
-    .updateOne({
-      $inc: {
-        [`hours.${hour}.reputation`]: reputationChanger,
-        reputation: reputationChanger,
-      },
-    });
+  await ChatDailyStatistics.changeReputation({
+    chat: repliedMessage.chat,
+    date: dates.date,
+    type: reputation.reaction,
+    hour,
+  });
 };
 
 export default reputationService;

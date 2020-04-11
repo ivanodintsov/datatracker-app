@@ -5,14 +5,14 @@ const reputationService = async ({
   reputation,
   message,
 }) => {
-  const replyedMessage = reputation.replyedMessage;
+  const repliedMessage = reputation.repliedMessage;
   const reputationChanger = reputation.reaction.changer;
-  const dates = getStatisticsHour(replyedMessage.date);
+  const dates = getStatisticsHour(repliedMessage.date);
 
   await ChatMembersStats
-    .where('from', replyedMessage.from)
-    .where('chat', replyedMessage.chat)
-    .where('date', dates.querter)
+    .where('from', repliedMessage.from)
+    .where('chat', repliedMessage.chat)
+    .where('date', dates.quarter)
     .updateOne({
       $inc: {
         reputation: reputationChanger,

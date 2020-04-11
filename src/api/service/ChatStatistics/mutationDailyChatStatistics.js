@@ -26,7 +26,7 @@ const updateChatMembersStats = async ({
   from,
   chat,
   date,
-  querterDate,
+  quarterDate,
   startDate,
   ...data
 }) => {
@@ -34,14 +34,14 @@ const updateChatMembersStats = async ({
   const stats = await ChatMembersStats.findOne({
     from,
     chat,
-    date: querterDate.toDate()
+    date: quarterDate.toDate()
   });
 
   if (stats) {
     await ChatMembersStats.updateOne({
       from,
       chat,
-      date: querterDate.toDate()
+      date: quarterDate.toDate()
     },
     {
       $inc: data
@@ -50,7 +50,7 @@ const updateChatMembersStats = async ({
     await ChatMembersStats.create([{
       from,
       chat,
-      date: querterDate.toDate(),
+      date: quarterDate.toDate(),
       date_day: startDate,
       last_message_date: moment(date).toDate(),
       ...data
@@ -65,11 +65,11 @@ export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ..
 
   try {
     const chatLifetime = concatPropName('statistics.', data);
-    const querterDate = moment(date);
+    const quarterDate = moment(date);
     const startDateMoment = moment(date).startOf('day');
     const startDate = startDateMoment.toDate();
-    const querter = getQuarterMinutes(querterDate.minutes());
-    querterDate.startOf('hour').minutes(querter);
+    const quarter = getQuarterMinutes(quarterDate.minutes());
+    quarterDate.startOf('hour').minutes(quarter);
 
     await Chat.updateOne({ id: chat }, { $inc: chatLifetime });
     await ChatMember.updateOne(
@@ -82,10 +82,10 @@ export const mutationDailyChatStatistics = async (_, { input: { sticker_data, ..
         }
       },
     );
-    await updateChatMembersStats({ ...input, querterDate, startDate });
+    await updateChatMembersStats({ ...input, quarterDate, startDate });
     await updateStickerSetsStats({ chat, from, sticker_data });
 
-    const hoursStats = concatPropName(`hours.${querterDate.hour()}.`, data);
+    const hoursStats = concatPropName(`hours.${quarterDate.hour()}.`, data);
     await dailyFindAndUpdate(null, {
       chat, date: startDate,
       data: { ...data, ...hoursStats }
