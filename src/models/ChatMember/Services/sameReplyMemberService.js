@@ -5,20 +5,20 @@ const sameReplyMemberService = async (message) => {
     return true;
   }
 
-  const replyedMessage = await Message.findOne({
+  const repliedMessage = await Message.findOne({
     message_id: message.reply_to_message,
     chat: message.chat,
   });
 
-  if (!replyedMessage) {
+  if (!repliedMessage) {
     return true;
   }
 
-  if (message.from === replyedMessage.from) {
+  if (message.from === repliedMessage.from) {
     return true;
   }
 
-  return replyedMessage;
+  return repliedMessage;
 };
 
 export default sameReplyMemberService;

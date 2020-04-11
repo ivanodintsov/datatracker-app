@@ -1,12 +1,13 @@
-import ChatMember from '../ChatMember';
 import sameReplyMemberService from '../Services/sameReplyMemberService';
 
 const getReactionItems = () => ({
   '+': {
-    type: 'INCREASE'
+    type: 'INCREASE',
+    changer: 1,
   },
   '-': {
     type: 'DECREASE',
+    changer: -1,
   }
 });
 
@@ -23,11 +24,10 @@ const reputationService = async (message) => {
     return;
   }
 
-  await ChatMember.changeReputation({
-    chat: isSameMemberMessage.chat,
-    user: isSameMemberMessage.from,
-    type: reaction.type,
-  });
+  return {
+    reaction,
+    repliedMessage: isSameMemberMessage,
+  };
 };
 
 export default reputationService;

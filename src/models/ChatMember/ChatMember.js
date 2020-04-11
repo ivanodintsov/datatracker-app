@@ -1,9 +1,10 @@
 import { baseStatistics } from '../Statistics/base';
 import mongoose from 'mongoose';
+import { ReputationSchema } from '../common/Reputation/Schema';
 const Types = mongoose.Schema.Types;
 
 const StatisticsSchema = baseStatistics({
-  reputataion: {
+  reputation: {
     type: Number,
     default: 0,
   },
@@ -73,6 +74,8 @@ export const ChatMemberSchema = new mongoose.Schema(
     last_activity_date: {
       type: Date,
     },
+    reputation: { type: ReputationSchema, default: ReputationSchema },
+    reputationChanges: { type: ReputationSchema, default: ReputationSchema },
   },
   {
     timestamps: true
@@ -81,33 +84,28 @@ export const ChatMemberSchema = new mongoose.Schema(
 ChatMemberSchema.index({ chat: 1, user: 1 }, { unique: true });
 ChatMemberSchema.index({ status: 1 });
 
-const CHANGE_REPUTATION_TYPE = {
-  INCREASE: {
-    changer: 1,
-  },
-  DECREASE: {
-    changer: -1,
-  },
-};
-
-ChatMemberSchema.statics.changeReputation = async function changeReputation (opts) {
+const changeReputation = async function (path, opts) {
   const { chat, user, type } = opts;
-  const changerType = CHANGE_REPUTATION_TYPE[type];
 
-  if (!changerType) {
-    return;
-  }
+  const reputationUpdate = ReputationSchema.statics.buildReputationChange({
+    path,
+    reputation: type,
+  });
 
   const member = this
     .where('chat', chat)
     .where('user', user)
-    .update({
-      $inc: {
-        'statistics.reputataion': changerType.changer,
-      },
-    });
+    .updateOne(reputationUpdate);
 
   return member;
+};
+
+ChatMemberSchema.statics.changeReputation = async function (opts) {
+  return changeReputation.bind(this)('reputation', opts);
+};
+
+ChatMemberSchema.statics.changeReputationChanges = async function (opts) {
+  return changeReputation.bind(this)('reputationChanges', opts);
 };
 
 const ChatMember = mongoose.model('chat_member', ChatMemberSchema);
