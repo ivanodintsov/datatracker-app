@@ -1,4 +1,6 @@
 import sameReplyMemberService from '../Services/sameReplyMemberService';
+import { RateLimiterRedis } from 'rate-limiter-flexible';
+import { redisClient }  from '../../../services/redis';
 
 const getReactionItems = () => ({
   '+': {
@@ -11,6 +13,18 @@ const getReactionItems = () => ({
   }
 });
 
+const opts = {
+  storeClient: redisClient,
+  points: 1,
+  duration: 60,
+
+  execEvenly: false,
+  blockDuration: 0,
+  keyPrefix: 'rep_rl',
+};
+
+const reputationRateLimiter = new RateLimiterRedis(opts);
+
 const reputationService = async (message) => {
   const reaction = getReactionItems()[message.text];
 
@@ -22,6 +36,16 @@ const reputationService = async (message) => {
 
   if (isSameMemberMessage === true) {
     return;
+  }
+
+  try {
+    await reputationRateLimiter.consume(`${message.chat}:${message.from}:${isSameMemberMessage.from}`);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      return;
+    }
   }
 
   return {
