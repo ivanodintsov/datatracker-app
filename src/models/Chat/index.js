@@ -1,8 +1,9 @@
 import R from 'ramda';
 import mongoose from 'mongoose';
-import createMessageSchema from './Message/base';
-import { baseStatistics } from './Statistics/base';
-import reduceNumber from '../helpers/reduceNumber';
+import createMessageSchema from '../Message/base';
+import { baseStatistics } from '../Statistics/base';
+import reduceNumber from '../../helpers/reduceNumber';
+import { ReputationSchema } from '../common/Reputation/Schema';
 const Types = mongoose.Schema.Types;
 
 const MessageSchema = createMessageSchema();
@@ -35,6 +36,7 @@ export const ChatSchema = new mongoose.Schema(
     is_active: { type: Boolean, default: true },
     active_days: { type: Types.Long, default: 0 },
     avg_statistics_yesterday: { type: StatisticsSchema, default: StatisticsSchema },
+    reputation: { type: ReputationSchema, default: ReputationSchema },
   },
   {
     timestamps: true
@@ -65,6 +67,23 @@ reduceNumberStatistics.forEach(reduceNumberVirtual);
 
 ChatSchema.index({ type: 1 });
 ChatSchema.index({ username: 1 });
+
+const changeReputation = async function (path, opts) {
+  const { chat, type } = opts;
+
+  const reputationUpdate = ReputationSchema.statics.buildReputationChange({
+    path,
+    reputation: type,
+  });
+
+  return this
+    .where('id', chat)
+    .updateOne(reputationUpdate);
+};
+
+ChatSchema.statics.changeReputation = async function (opts) {
+  return changeReputation.bind(this)('reputation', opts);
+};
 
 const Chat = mongoose.model('chat', ChatSchema);
 
