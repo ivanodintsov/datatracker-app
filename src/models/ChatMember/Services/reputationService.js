@@ -1,8 +1,11 @@
+import R from 'ramda';
 import sameReplyMemberService from '../Services/sameReplyMemberService';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import { redisClient }  from '../../../services/redis';
+import Chat from '../../Chat';
+import cache from '../../../helpers/cache';
 
-const getReactionItems = () => ({
+const DEFAULT_TRIGGERS = {
   '+': {
     type: 'INCREASE',
     changer: 1,
@@ -11,7 +14,26 @@ const getReactionItems = () => ({
     type: 'DECREASE',
     changer: -1,
   }
-});
+};
+
+const getChatTriggers = cache(
+  (id) => Chat.getReputationTriggers(id),
+  id => `rep_tr:${id}`,
+  'EX', 360,
+);
+
+const getReaction = async (message) => {
+  const defaultTrigger = R.prop(message.text, DEFAULT_TRIGGERS);
+
+  if (defaultTrigger) {
+    return defaultTrigger;
+  }
+
+  const triggers = await getChatTriggers(message.chat);
+  const trigger = R.find(R.propEq('trigger', message.text), triggers);
+
+  return trigger;
+};
 
 const opts = {
   storeClient: redisClient,
@@ -26,7 +48,7 @@ const opts = {
 const reputationRateLimiter = new RateLimiterRedis(opts);
 
 const reputationService = async (message) => {
-  const reaction = getReactionItems()[message.text];
+  const reaction = await getReaction(message);
 
   if (!reaction) {
     return;
