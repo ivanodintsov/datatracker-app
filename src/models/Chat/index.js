@@ -4,6 +4,7 @@ import createMessageSchema from '../Message/base';
 import { baseStatistics } from '../Statistics/base';
 import reduceNumber from '../../helpers/reduceNumber';
 import { ReputationSchema } from '../common/Reputation/Schema';
+import { ReputationTrigger } from '../common/Reputation/models/ReputationTrigger';
 const Types = mongoose.Schema.Types;
 
 const MessageSchema = createMessageSchema();
@@ -37,6 +38,7 @@ export const ChatSchema = new mongoose.Schema(
     active_days: { type: Types.Long, default: 0 },
     avg_statistics_yesterday: { type: StatisticsSchema, default: StatisticsSchema },
     reputation: { type: ReputationSchema, default: ReputationSchema },
+    reputationTriggers: { type: [ReputationTrigger], default: [] },
   },
   {
     timestamps: true
@@ -83,6 +85,19 @@ const changeReputation = async function (path, opts) {
 
 ChatSchema.statics.changeReputation = async function (opts) {
   return changeReputation.bind(this)('reputation', opts);
+};
+
+ChatSchema.statics.getReputationTriggers = async function (id) {
+  const chat = await this
+    .where('id', id)
+    .select({ reputationTriggers: 1 })
+    .findOne();
+
+  if (!chat) {
+    return chat;
+  }
+
+  return chat.reputationTriggers;
 };
 
 const Chat = mongoose.model('chat', ChatSchema);
