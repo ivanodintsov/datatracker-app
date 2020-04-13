@@ -23,16 +23,19 @@ const getChatTriggers = cache(
 );
 
 const getReaction = async (message) => {
-  const defaultTrigger = R.prop(message.text, DEFAULT_TRIGGERS);
-
-  if (defaultTrigger) {
-    return defaultTrigger;
+  if (message.text) {
+    const text = R.toLower(message.text);
+    const defaultTrigger = R.prop(text, DEFAULT_TRIGGERS);
+  
+    if (defaultTrigger) {
+      return defaultTrigger;
+    }
+  
+    const triggers = await getChatTriggers(message.chat);
+    const trigger = R.find(R.propEq('trigger', text), triggers);
+  
+    return trigger;
   }
-
-  const triggers = await getChatTriggers(message.chat);
-  const trigger = R.find(R.propEq('trigger', message.text), triggers);
-
-  return trigger;
 };
 
 const opts = {
